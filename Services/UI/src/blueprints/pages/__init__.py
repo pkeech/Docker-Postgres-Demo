@@ -42,12 +42,9 @@ def add_default():
 @page.route("/search/<username>")
 def search(username):
     ## SEARCH FOR USER ACCOUNT
-    account = User.query.filter_by(username=username).first()
+    account = User.query.filter_by(username=username).first_or_404(description='No user account found with the username:  {}'.format(username))
 
-    ## VALIDATE RESPONSE
-    if account == None:
-        return "<h1>Results</h1><table><tr><th>ID</th><th>Username</th><th>Email</th></tr><tr><td colspan='3'>No Accounts Found!</td></tr></table>"
-
+    ## RETURN RESPONSE
     return f"<h1>Results</h1><table><tr><th>ID</th><th>Username</th><th>Email</th></tr><tr><td>{ account.id }</td><td>{ account.username }</td><td>{ account.email }</td></tr></table>"
 
 ## ROUTE: SEARCH ALL
@@ -68,3 +65,16 @@ def search_all():
 
     ## DISPLAY PAGE
     return resp
+
+## ROUTE: DELETE ACCOUNT
+@page.route("/delete/<username>")
+def delete_account(username):
+    ## SEARCH FOR USER ACCOUNT
+    account = User.query.filter_by(username=username).first_or_404(description='No user account found with the username:  {}'.format(username))
+    
+    ## DELETE ACCOUNT
+    db.session.delete(account)
+    db.session.commit()
+
+    ## DISPLAY RESPONSE
+    return f"{ username } Account Deleted Succesfully !"
