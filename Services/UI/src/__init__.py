@@ -27,6 +27,10 @@ def create_app(settings_override=None):
         ## Register Blueprints
         app.register_blueprint(page)
 
+        ## Create Database Objects
+        import src.models
+        db.create_all()
+
         ## Application Logging (STDOUT)
         app.logger.addHandler(stream_handler)
 

@@ -16,8 +16,8 @@ services:
     container_name: DATABASE
     restart: unless-stopped
     volumes:
-      #- postgres_data:/var/lib/postgresql/data
-      - ./Services/DB/data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+      #- ./Services/DB/data:/var/lib/postgresql/data
 
   ui:
     build:
