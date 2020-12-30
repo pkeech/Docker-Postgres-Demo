@@ -1,0 +1,32 @@
+## DEFINE COMPOSE VERSION
+version: '2.4'
+
+## DEFINE SERVICES
+services:
+  ui:
+    build:
+      context: Services/UI
+      target: Development 
+    ports:
+      - 8081:8080
+    volumes:
+      - ./Services/UI:/app
+    container_name: UI
+    image: ui:dev
+    restart: unless-stopped
+
+  ## DISABLE NGINX AS UWSGI IS NOT USED IN DEV
+  web:
+    image: web:dev
+    entrypoint: ["echo", "Service foo disabled"]
+
+  ## DATABASE UI TOOL
+  adminer:
+    image: adminer
+    container_name: ADMINER
+    ports:  
+      - 8082:8080
+
+## DEFINE VOLUMES
+
+## DEFINE NETWORKS

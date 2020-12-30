@@ -1,0 +1,43 @@
+## DEFINE COMPOSE VERSION
+version: '2.4'
+
+## DEFINE SERVICES
+services:
+  db:
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+    image: postgres:latest
+    #networks:
+    #  - default
+    #ports:
+    #  - 5405:5432
+    container_name: DATABASE
+    restart: unless-stopped
+    volumes:
+      #- postgres_data:/var/lib/postgresql/data
+      - ./Services/DB/data:/var/lib/postgresql/data
+
+  ui:
+    build:
+      context: Services/UI
+      target: Production
+    container_name: UI
+    image: ui:1.0.0
+    restart: unless-stopped
+
+  web:
+    build: 
+      context: Services/Web
+      target: Production
+    image: web:1.0.0
+    container_name: WEB
+    ports:
+      - 80:8080
+
+## DEFINE VOLUMES
+volumes:
+  postgres_data:
+
+## DEFINE NETWORKS
