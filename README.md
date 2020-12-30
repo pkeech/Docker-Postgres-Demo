@@ -46,3 +46,16 @@ Navigate to the following endpoints to accomplish the desired tasks:
 ### Delete User Account
 
 `http://localhost:8081/delete/admin`
+
+
+## Database GUI
+
+A database GUI is provided by `Adminer`. To Access `Adminer` : 
+
+1. Navigate to `http://localhost:8082`
+
+2. Select `PostGreSQL` as the System
+
+3. Enter `db` as the Server
+
+4. Use the credentials that are defined in the `docker-compose.yml` file
