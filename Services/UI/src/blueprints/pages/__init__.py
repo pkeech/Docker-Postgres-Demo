@@ -16,11 +16,19 @@ def index():
     #return render_template('index.html')
     return "HELLO WORLD"
 
+## ROUTE: ADD ACCOUNTS
 @page.route("/add_default")
 def add_default():
     ## DEFINE DEFAULT USER ACCOUNTS
     admin = User(username='admin', email='admin@example.com')
     guest = User(username='guest', email='guest@example.com')
+
+    ## Search For Existing Account
+    if User.query.filter_by(username='admin').first() != None:
+        return "Accounts (Admin) Already Created!"
+
+    if User.query.filter_by(username='guest').first() != None:
+        return "Accounts (Guest) Already Created!"
 
     ## Create User Accounts
     db.session.add(admin)
@@ -29,3 +37,34 @@ def add_default():
 
     ## Return Response
     return "Accounts Added !!"
+
+## ROUTE: SEARCH ACCOUNT
+@page.route("/search/<username>")
+def search(username):
+    ## SEARCH FOR USER ACCOUNT
+    account = User.query.filter_by(username=username).first()
+
+    ## VALIDATE RESPONSE
+    if account == None:
+        return "<h1>Results</h1><table><tr><th>ID</th><th>Username</th><th>Email</th></tr><tr><td colspan='3'>No Accounts Found!</td></tr></table>"
+
+    return f"<h1>Results</h1><table><tr><th>ID</th><th>Username</th><th>Email</th></tr><tr><td>{ account.id }</td><td>{ account.username }</td><td>{ account.email }</td></tr></table>"
+
+## ROUTE: SEARCH ALL
+@page.route("/search")
+def search_all():
+    ## SEARCH ALL ACCOUNTS
+    accounts = User.query.all()
+
+    ## CREATE RESPONSE
+    resp = "<h1>Results</h1><table><tr><th>ID</th><th>Username</th><th>Email</th></tr>"
+
+    ## LOOP THROUGH RESULTS
+    for account in accounts:
+        resp = resp + f"<tr><td>{ account.id }</td><td>{ account.username }</td><td>{ account.email }</td></tr>"
+
+    ## CLOSE OUT TABLE
+    resp = resp + "</table>"
+
+    ## DISPLAY PAGE
+    return resp
